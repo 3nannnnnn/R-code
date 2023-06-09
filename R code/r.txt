@@ -1,0 +1,51 @@
+how<-read.csv("G4_howell.csv")
+View(how)
+#Data cleaning
+#Re-code the gender feature to Male and Female
+how$Sex[how$gender=="F" ]=="Female"
+how$Sex[how$gender=="cm"]=="Male"
+#show all the rows that have NA
+how[!complete.cases(how) , ]
+#Replace each NA in height according to the mean of
+#height to all males for males and height to all females for females
+m_mean<-mean(how[how$Sex=="Male" , 'height' ], na.rm=T)
+how[is.na(how$height) & how$Sex=="Male"  , 'height']=m_mean
+f_mean<-mean(how[how$Sex=="Female" , 'height' ], na.rm=T)
+how[is.na(how$height) & how$Sex=="Female"  , 'height']=f_mean
+
+#Re_code age variable 
+how$ageRange[how$age <= 5]="0 _ 5"
+how$ageRange[how$age > 5 & how$age <= 10]="6 _ 10"
+how$ageRange[how$age >10 ]="11 _ .."
+
+remove the text(kg)in weight feature to convert it to numeric to use in the analysis
+
+how$weight<-gsub(" kg" ,"" , how$weight)
+how$weight<-as.numeric(how$weight)
+
+
+
+#Subset only males who have height than  120
+
+sub1<-how[how$Sex=="Male" & how$height >120 , ]
+
+
+
+sub2<-how[how$height== 1 , ]
+
+
+
+
+sub3<-how[how$height > median(how$height) &
+            anthro$Overweight >= 135 ,c(1,5) ]
+
+sort the data set ascending according to 2 variables
+
+sorted<-how[order(how$age ,how$height) , ]
+
+#Get only the first 30 rows
+h<-head(how ,30)
+
+#Get only the last 50 rows
+t<-tail(how ,50)
+
